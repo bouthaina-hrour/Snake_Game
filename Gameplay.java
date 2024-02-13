@@ -12,6 +12,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+
+// cette classe a plusieurs reponsabilités, elle gére à la fois la logique du jeu ( mouvements du serpent, score, collisions corp serpent)
+// et la partie graphique ( dessin du jeu, restart ou game over)
+// c'est préférable de faire nos propre classes serpent et ennemy
 public class Gameplay extends JPanel implements KeyListener, ActionListener
 {
 	
@@ -54,6 +58,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         timer = new Timer(delay, this);
         timer.start();
 	}
+
+	// Cette méthode est trop longue
+	// le chargement des images se fait ici, et à chaque fois qu'on fait paint on va créer une nouvel objet ImageIcon ce qui n'est pas bien
+	// alors qu'on peut les faire une fois pour toute en l'initialisant dans le constructeur
 	public void paint (Graphics g)
 	{
 		if(moves == 0)
@@ -65,7 +73,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
             snakeylength[2] = 100;
             snakeylength[1] = 100;
             snakeylength[0] = 100;
-            
+
         }
 		//draw title image border
 		g.setColor(Color.WHITE);
@@ -143,6 +151,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         enemyimage.paintIcon(this, g, enemyxpos[xpos], enemyypos[ypos]);
         for(int b=1;b<lengthofsnake;b++)
         {
+			// on gére les collisions dans le corp de serpent
         	if(snakexlength[b]==snakexlength[0] && snakeylength[b]==snakeylength[0])
         	{
         		right=false;
@@ -247,6 +256,9 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
     public void keyReleased(KeyEvent ke) {
     }
 
+	// cette méthode contient des répétitions qui peuvent etre factorisé
+	// les if peuvent etre remplacés par des switch
+	//
     @Override
     public void actionPerformed(ActionEvent e)
     {
